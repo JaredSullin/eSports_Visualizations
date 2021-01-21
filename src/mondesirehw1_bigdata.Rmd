@@ -1,0 +1,101 @@
+---
+title: "esports_top_streamersdata"
+author: "jared sullin"
+date: "1/12/2021"
+output: html_document
+---
+
+## Imports
+
+```{r}
+library(ggplot2)
+```
+
+## getting csv
+
+```{r}
+twitchdata <- read.csv("Downloads/twitchdata-update.csv",
+         header = TRUE,
+         sep = ",",
+         stringsAsFactors = FALSE)
+twitchdata
+```
+
+
+## Dot plot
+```{r}
+
+top20Channels<- twitchdata[1:10,]
+top20Channels
+
+qpplot <- qplot(x = Followers, y = Followers.gained, data = top20Channels, color= Channel)
+
+print(qpplot+ ggtitle("Followers gained vs. Followers for the top 10 streamers"))
+
+```
+
+
+## Getting the top ten Streamers
+
+```{r}
+top20channel <- twitchdata[1:10, "Channel"]
+top20channel
+top20views<- twitchdata[1:10, "Average.viewers"]
+top20views
+
+  
+```
+
+## bar plot 
+```{r}
+library(ggplot2)
+
+data <- data.frame(
+  channel=c(top20channel) ,  
+  views=c(top20views)
+  )
+
+viewsPlot<- ggplot(data, aes(x=channel, y=views)) + 
+  geom_bar(stat = "identity", color = "red", )
+
+print(viewsPlot + ggtitle( "Channel vs. Channel.Average Viewers"))
+```
+
+## Pie
+
+```{r}
+
+
+datanew<- data.frame(table(unlist(strsplit(tolower(top20Channels$Language), " "))))
+
+datanew
+
+
+datafinal <- data.frame(
+  group=c(datanew$Var1) ,  
+  value=c(datanew$Freq)
+  )
+
+datafinal
+
+tempfilez<- names(datanew)[names(datanew) == "Var1"] <- "Languages"
+
+
+
+# Barplot
+bp<- ggplot(datanew, aes(x="", y=datafinal$value, fill=Languages))+
+geom_bar(stat = "identity", width = 1)+
+coord_polar("y", start=0)
+bp
+
+
+print(bp + ggtitle("Distribution of languages in the top 10 players")+ xlab("Distribution") + ylab(""))
+```
+## Line chart
+```{r}
+kanye <- plot(data$views,type = "l",col = "red ", xlab = "Month", ylab = "Views", main = "Views base on month for Streamer xQcOW")
+
+
+```
+
+

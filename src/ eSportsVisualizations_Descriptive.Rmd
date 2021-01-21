@@ -1,0 +1,82 @@
+---
+title: "Tutorial"
+output: learnr::tutorial
+runtime: shiny_prerendered
+---
+
+```{r setup, include=FALSE}
+library(learnr)
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+
+## Topic 1
+
+### Exercise 
+
+## Imports
+
+```{r}
+library(ggplot2)
+```
+
+## getting csv
+
+```{r}
+twitchdata <- read.csv("twitchdata-update.csv",
+         header = TRUE,
+         sep = ",",
+         stringsAsFactors = FALSE)
+twitchdata
+```
+Fig.1
+
+```{r}
+e<- boxplot(twitchdata$Average.viewers/10000,
+        main = "Average viewers for the Top 100 Twitch streamers",
+        xlab = "Average viewers per thousand",
+        ylab = "Average viewers",
+        col = "orange",
+        horizontal = TRUE,
+        notch = TRUE)
+```
+
+## You can see here that there are a lot of streamers that are outliers i belive this is becuase of the popularity of some channels and recurring watchers
+
+
+```{r}
+hist(twitchdata$Peak.viewers/10,
+      main="Peak viewers for the top 100 twitch streamers",
+      xlab="Peak.viewers divided by 10",
+      col="darkmagenta")
+```
+
+##It seems like most twitch streamers often do not reach the peak number of views for most of thier streams. There are some outliers but too few in number they must have deticated fa based for the ones past 20000
+
+
+```{r}
+top20channel <- twitchdata[1:6,]
+top20channel
+```
+
+```{r}
+twitchdata$Followers.gained <- as.factor(twitchdata$Followers.gained)
+twitchdata$Channel <- as.factor(twitchdata$Channel)
+
+head(twitchdata)
+```
+
+
+
+
+```{r}
+ bp <- ggplot(top20channel, mapping = aes(x = Channel , y = Followers.gained), ) + geom_violin() 
+
+print(bp +  ggtitle("Top 6 channels followers gained"))
+```
+
+## I attempted to create a violin plot showing the top 20 channels and their followers gained but i honestly thing my data set is not the best fit for this Visualization or the data im using is not being condensed correctly. Ideally this would have been able to properly shown win rate for each of the top 20 channels and their followers gained in the last year.
+
+
+
+
